@@ -87,11 +87,80 @@ docker-compose logs -f
 docker-compose down
 ```
 
-The server will start on `http://localhost:3001`
+The server will start on `http://localhost:3001` (or `http://sitemapperpro.local.se` if configured)
+
+### Setting up Local Domain (sitemapperpro.local.se)
+
+#### Automatic Setup (Mac/Linux):
+
+```bash
+sudo ./setup-local-domain.sh
+```
+
+#### Manual Setup:
+
+##### On macOS:
+
+1. Open Terminal
+2. Edit the hosts file:
+   ```bash
+   sudo nano /etc/hosts
+   ```
+3. Add this line:
+   ```
+   127.0.0.1       sitemapperpro.local.se
+   ```
+4. Save the file (Ctrl+O, Enter, Ctrl+X)
+5. Flush DNS cache:
+   ```bash
+   sudo dscacheutil -flushcache
+   ```
+
+##### On Windows:
+
+1. Open Notepad as Administrator
+   - Right-click on Notepad
+   - Select "Run as administrator"
+2. Open the hosts file:
+   - File → Open
+   - Navigate to: `C:\Windows\System32\drivers\etc\`
+   - Change file type from "Text Documents" to "All Files"
+   - Select the `hosts` file
+3. Add this line at the end:
+   ```
+   127.0.0.1       sitemapperpro.local.se
+   ```
+4. Save the file (Ctrl+S)
+5. Flush DNS cache (open Command Prompt as Administrator):
+   ```cmd
+   ipconfig /flushdns
+   ```
+
+##### On Linux:
+
+1. Edit the hosts file:
+   ```bash
+   sudo nano /etc/hosts
+   ```
+2. Add this line:
+   ```
+   127.0.0.1       sitemapperpro.local.se
+   ```
+3. Save the file (Ctrl+O, Enter, Ctrl+X)
+4. Flush DNS cache:
+   ```bash
+   # For systemd
+   sudo systemd-resolve --flush-caches
+   
+   # Or restart network service
+   sudo service network-manager restart
+   ```
+
+After setting up the domain, access the application at: `http://sitemapperpro.local.se`
 
 ### Using the Web Interface
 
-1. Open `http://localhost:3001` in your browser
+1. Open `http://sitemapperpro.local.se` (or `http://localhost:3001`) in your browser
 2. Enter a website URL to extract
 3. Set the desired crawl depth (1-30 levels)
 4. Click "Start Extraction" 
