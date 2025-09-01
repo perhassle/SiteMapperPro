@@ -8,6 +8,10 @@ yarn-error.log*
 extractions/*
 !extractions/.gitkeep
 
+# SSL certificates
+nginx/certs/*
+!nginx/certs/.gitkeep
+
 # Environment variables
 .env
 .env.local

@@ -3,13 +3,10 @@ version: '3.8'
 services:
   sitemapper:
     build: .
-    container_name: sitemapper-pro
-    ports:
-      - "80:3001"  # Map to port 80 for domain access
+    container_name: sitemapper-app
     environment:
       - NODE_ENV=production
       - PORT=3001
-      - VIRTUAL_HOST=sitemapperpro.local.se
     volumes:
       # Persist extractions between container restarts
       - ./extractions:/app/extractions
@@ -19,16 +16,27 @@ services:
     restart: unless-stopped
     networks:
       - sitemapper-network
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.sitemapper.rule=Host(`sitemapperpro.local.se`)"
-      - "traefik.http.services.sitemapper.loadbalancer.server.port=3001"
     healthcheck:
       test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3001"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 40s
+
+  nginx:
+    image: nginx:alpine
+    container_name: sitemapper-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/certs:/etc/nginx/certs:ro
+    depends_on:
+      - sitemapper
+    restart: unless-stopped
+    networks:
+      - sitemapper-network
 
 networks:
   sitemapper-network:

@@ -44,7 +44,13 @@ git clone https://github.com/perhassle/SiteMapperPro.git
 cd SiteMapperPro
 ```
 
-2. Build and run with Docker Compose:
+2. Generate SSL certificate (for HTTPS):
+
+```bash
+./generate-ssl-cert.sh
+```
+
+3. Build and run with Docker Compose:
 
 ```bash
 docker-compose up -d
@@ -160,11 +166,27 @@ sudo ./setup-local-domain.sh
    sudo service network-manager restart
    ```
 
-After setting up the domain, access the application at: `http://sitemapperpro.local.se`
+After setting up the domain, access the application at: 
+- **HTTP**: `http://sitemapperpro.local.se`
+- **HTTPS**: `https://sitemapperpro.local.se` (requires SSL certificate)
+
+### SSL/HTTPS Configuration
+
+#### Generate Self-Signed Certificate (for local development):
+
+```bash
+./generate-ssl-cert.sh
+```
+
+This creates a self-signed certificate valid for 365 days. Your browser will show a security warning - this is normal for self-signed certificates. Click "Advanced" and "Proceed to sitemapperpro.local.se" to continue.
+
+#### For Production (with Let's Encrypt):
+
+For production deployments with a real domain, you can use Certbot or another ACME client to get free SSL certificates from Let's Encrypt.
 
 ### Using the Web Interface
 
-1. Open `http://sitemapperpro.local.se` (or `http://localhost:3001`) in your browser
+1. Open `https://sitemapperpro.local.se` (or `http://localhost:3001`) in your browser
 2. Enter a website URL to extract
 3. Set the desired crawl depth (1-30 levels)
 4. Click "Start Extraction" 
