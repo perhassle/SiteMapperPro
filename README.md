@@ -14,6 +14,10 @@ A professional web-based site structure extraction tool that crawls websites to 
 - 📝 **Export Formats**: JSON structure data and visual HTML tree representation
 - 🗂️ **Job History**: View and manage previous extractions with delete functionality
 
+
+<img width="1957" height="1255" alt="image" src="https://github.com/user-attachments/assets/2625cf3b-8899-455a-88ea-e528cbe265f8" />
+
+
 ## Installation
 
 ### Option 1: Local Installation
