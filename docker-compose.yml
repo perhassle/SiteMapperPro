@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  sitemapper:
+    build: .
+    container_name: sitemapper-pro
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+    volumes:
+      # Persist extractions between container restarts
+      - ./extractions:/app/extractions
+      # Optional: Mount for development (comment out for production)
+      # - ./:/app
+      # - /app/node_modules
+    restart: unless-stopped
+    networks:
+      - sitemapper-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3001"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  sitemapper-network:
+    driver: bridge
+
+# Optional: Add volume for persistent storage
+volumes:
+  extractions:
+    driver: local

@@ -16,11 +16,13 @@ A professional web-based site structure extraction tool that crawls websites to 
 
 ## Installation
 
+### Option 1: Local Installation
+
 1. Clone the repository:
 
 ```bash
-git clone <repository-url>
-cd dotplaywright-mcp
+git clone https://github.com/perhassle/SiteMapperPro.git
+cd SiteMapperPro
 ```
 
 2. Install dependencies:
@@ -29,9 +31,40 @@ cd dotplaywright-mcp
 npm install
 ```
 
+### Option 2: Docker Installation
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/perhassle/SiteMapperPro.git
+cd SiteMapperPro
+```
+
+2. Build and run with Docker Compose:
+
+```bash
+docker-compose up -d
+```
+
+Or build and run manually:
+
+```bash
+# Build the image
+docker build -t sitemapper-pro .
+
+# Run the container
+docker run -d \
+  --name sitemapper-pro \
+  -p 3001:3001 \
+  -v $(pwd)/extractions:/app/extractions \
+  sitemapper-pro
+```
+
 ## Usage
 
 ### Starting the Server
+
+#### Local:
 
 ```bash
 # Production mode
@@ -39,6 +72,19 @@ npm start
 
 # Development mode with auto-restart
 npm run dev
+```
+
+#### Docker:
+
+```bash
+# Start services
+docker-compose up -d
+
+# View logs
+docker-compose logs -f
+
+# Stop services
+docker-compose down
 ```
 
 The server will start on `http://localhost:3001`
@@ -140,6 +186,7 @@ Configure in the extraction request:
 - **Web Scraping**: Playwright
 - **Frontend**: Vanilla JavaScript, HTML5, CSS3
 - **Real-time**: WebSockets for live progress updates
+- **Containerization**: Docker & Docker Compose
 
 ## Architecture
 
@@ -158,6 +205,39 @@ Configure in the extraction request:
                         └──────────────┘         └──────────────┘
 ```
 
+## Docker Configuration
+
+### Environment Variables
+
+The Docker setup supports the following environment variables:
+
+- `PORT` - Server port (default: 3001)
+- `NODE_ENV` - Environment mode (default: production)
+
+### Docker Commands
+
+```bash
+# Build the image
+docker-compose build
+
+# Start in detached mode
+docker-compose up -d
+
+# Stop and remove containers
+docker-compose down
+
+# View logs
+docker-compose logs -f sitemapper
+
+# Access container shell
+docker exec -it sitemapper-pro sh
+
+# Remove all data and rebuild
+docker-compose down -v
+docker-compose build --no-cache
+docker-compose up -d
+```
+
 ## Troubleshooting
 
 ### Port already in use
@@ -170,6 +250,21 @@ lsof -ti:3001 | xargs kill -9
 
 # Then restart the server
 npm start
+```
+
+### Docker Issues
+
+If the Docker container fails to start:
+
+```bash
+# Check container logs
+docker-compose logs sitemapper
+
+# Rebuild the image
+docker-compose build --no-cache
+
+# Check container status
+docker ps -a
 ```
 
 ### Extraction stuck or slow
